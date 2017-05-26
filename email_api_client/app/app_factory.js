@@ -6,7 +6,7 @@ app.factory('Utils', function () {
 
     var constants = {
         //BASE_URL: "https://data.sfgov.org/resource/6a9r-agq8.json",
-        BASE_URL: "http://10.40.12.205:3000/",
+        BASE_URL: "http://localhost:3000/",
         SERVER_ERROR: "There is no internet connection or server unreachable.",
         SETTING: {
             SOUND_NOTIFY_SETTING_KEY: "SOUNDNOTIFY"

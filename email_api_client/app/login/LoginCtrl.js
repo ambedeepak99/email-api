@@ -31,7 +31,6 @@ function LoginCtrl($scope,$location, Utils, WebService, $interval) {
 
     if(!STORAGE.getStorage("access_token"))
     {
-
         /**
          * submit - This function is used to validate the user credentials
          * @author Prathamesh parab

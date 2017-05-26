@@ -21,13 +21,8 @@ We have two kinds of dependencies in this project: tools and Angular framework c
 
 **Note:**
 
-<<<<<<< HEAD
-- Install xampp in your local machine, you can get xampp from [here](https://www.apachefriends.org/index.html)
-- Refere [this](http://www.wikihow.com/Install-XAMPP-for-Windows) step to install xampp in your local machine
-=======
  - Install xampp in your local machine, you can get xampp from [here](https://www.apachefriends.org/index.html)
  - Refere [this](http://www.wikihow.com/Install-XAMPP-for-Windows) step to install xampp in your local machine
->>>>>>> f57f0e2937e859abf8c54de2d084980f6dfc2561
 
 
 Install grunt dependancy from package.json
@@ -45,12 +40,9 @@ Install grunt dependancy from package.json
 ```sh
 $ npm install
 ```
-Once grunt installed then you can run following command to deployed project [dom-deployed]
+Once grunt installed then you can run following command to deployed project [dist]
 ```sh
 $ grunt     (deployed project)
 $ grunt watch  (It will watch changes in project and deploy project if changes found)
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> f57f0e2937e859abf8c54de2d084980f6dfc2561
+
