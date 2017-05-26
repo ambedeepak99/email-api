@@ -3,7 +3,7 @@
  * @description This file is used to redirect application state e.g. login, mailer etc.
  * @author Prathamesh Parab
  */
-var app = angular.module("done", ["ngRoute"]);
+var app = angular.module("emailAPI", ["ngRoute"]);
 
 app.config(["$httpProvider", "$routeProvider", function ($httpProvider, $routeProvider) {
 

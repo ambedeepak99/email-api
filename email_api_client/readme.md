@@ -46,3 +46,12 @@ $ grunt     (deployed project)
 $ grunt watch  (It will watch changes in project and deploy project if changes found)
 ```
 
+**Install xampp server**
+
+1. Check, [Download link](https://www.apachefriends.org/index.html)
+
+2. copy paste application dist folder into xampp\htdocs\CREATE_PROJECT_FOLDER folder. 
+
+3. run xampp server using xampp console.
+
+4. type in browser, http://localhost/PROJECT_FOLDER/dist

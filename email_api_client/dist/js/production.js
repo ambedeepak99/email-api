@@ -3,7 +3,7 @@
  * @description This file is used to redirect application state e.g. login, mailer etc.
  * @author Prathamesh Parab
  */
-var app = angular.module("done", ["ngRoute"]);
+var app = angular.module("emailAPI", ["ngRoute"]);
 
 app.config(["$httpProvider", "$routeProvider", function ($httpProvider, $routeProvider) {
 
@@ -207,7 +207,7 @@ app.factory('Utils', function () {
 
     var constants = {
         //BASE_URL: "https://data.sfgov.org/resource/6a9r-agq8.json",
-        BASE_URL: "http://10.40.12.205:3000/",
+        BASE_URL: "http://localhost:3000/",
         SERVER_ERROR: "There is no internet connection or server unreachable.",
         SETTING: {
             SOUND_NOTIFY_SETTING_KEY: "SOUNDNOTIFY"
@@ -269,7 +269,7 @@ app.factory('Utils', function () {
         localStorage.removeItem(key);
     }
 
-    return{
+    return {
         CONSTANTS: constants,
         STORAGE: storageFunctions,
         SOUNDNOTIFY: soundNotifyFunctions,
@@ -285,7 +285,7 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
             validatelogin: validatelogin,
             createAlert: createAlert,
             sendMails: sendMails,
-            signUp : signUp
+            signUp: signUp
         }
         var finalResult = {
             "success": false,
@@ -298,17 +298,17 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
          * @param callback
          * @author Prathamesh Parab
          */
-        function checkAuthorization(err, callback) {
-            if (err.code == 401 || err.code == 402) {
-                $location.path('/login');
-                createAlert(1, "your session has been expire please try to login again", 3);
-            } else {
-                $location.path('/login');
-                createAlert(1, Utils.CONSTANTS.SERVER_ERROR, 3);
-                callback(finalResult);
-            }
+        function checkAuthorization(err) {
+            if (err)
+                if (err.code == 401 || err.code == 402) {
+                    createAlert(1, "your session has been expire please try to login again", 3);
+                    Utils.STORAGE.deleteStorage("email_auth_token");
+                    $location.path('/login');
+                } else {
+                    createAlert(1, Utils.CONSTANTS.SERVER_ERROR, 3);
+                    //$location.path('/login');
+                }
         }
-
         /**
          * This service used to verify user creaditial
          * @param loginInfo
@@ -322,9 +322,12 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                 'password': loginInfo.pwd
             };
 
-            var request_config = { headers: {  "Content-Type": 'application/json',
-                "authorization": Utils.STORAGE.getStorage("access_token")
-            } };
+            var request_config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "authorization": Utils.STORAGE.getStorage("email_auth_token")
+                }
+            };
 
             $http.post(BASE_URL + "user/signin", post_request, request_config)
                 .success(function (data) {
@@ -332,8 +335,11 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                     finalResult.response = data;
                     callback(finalResult);
                 }).error(function (err) {
-                    checkAuthorization(err);
-                });
+                checkAuthorization(err);
+                finalResult.success = false;
+                finalResult.response = err;
+                callback(finalResult);
+            });
         };
 
 
@@ -351,9 +357,12 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                 'email': loginInfo.email
             };
 
-            var request_config = { headers: {  "Content-Type": 'application/json',
-                "authorization": Utils.STORAGE.getStorage("access_token")
-            } };
+            var request_config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "authorization": Utils.STORAGE.getStorage("email_auth_token")
+                }
+            };
 
             $http.post(BASE_URL + "user/signup", post_request, request_config)
                 .success(function (data) {
@@ -361,8 +370,11 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                     finalResult.response = data;
                     callback(finalResult);
                 }).error(function (err) {
-                    checkAuthorization(err);
-                });
+                checkAuthorization(err);
+                finalResult.success = false;
+                finalResult.response = err;
+                callback(finalResult);
+            });
         };
 
         /**
@@ -416,9 +428,12 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                 'body': loginInfo.body
             };
 
-            var request_config = { headers: {  "Content-Type": 'application/json',
-                "authorization": Utils.STORAGE.getStorage("access_token")
-            } };
+            var request_config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "authorization": Utils.STORAGE.getStorage("email_auth_token")
+                }
+            };
 
             $http.post(BASE_URL + "v1/mailer/sendmail", post_request, request_config)
                 .success(function (data) {
@@ -427,11 +442,14 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                     finalResult.response = data;
                     callback(finalResult);
                 }).error(function (err) {
-                    checkAuthorization(err);
-                });
+                checkAuthorization(err);
+                finalResult.success = false;
+                finalResult.response = err;
+                callback(finalResult);
+            });
         };
 
-        return{
+        return {
             WEBSERVICES: WebServiceFunctions
         }
     }]
@@ -612,7 +630,7 @@ function EmailCtrl($scope, $location, Utils, WebService, $interval) {
      * to check token is expire or not and then only proceed
      */
 
-    if (STORAGE.getStorage("access_token") && STORAGE.getStorage("access_token") != "") {
+    if (STORAGE.getStorage("email_auth_token") && STORAGE.getStorage("email_auth_token") != "") {
         vm.user = {
             emails: "",
             body: "",
@@ -663,7 +681,7 @@ function EmailCtrl($scope, $location, Utils, WebService, $interval) {
          * @author Prathamesh Parab
          */
         function logout() {
-            STORAGE.deleteStorage("access_token");
+            STORAGE.deleteStorage("email_auth_token");
             $location.path('/login');
             location.reload();
         }
@@ -684,9 +702,9 @@ function EmailCtrl($scope, $location, Utils, WebService, $interval) {
             $(".emailfailure").slideUp(500).hide(0);
         }
     } else {
-        STORAGE.deleteStorage("access_token");
+        STORAGE.deleteStorage("email_auth_token");
         $location.path('/login');
-        location.reload();
+        //location.reload();
     }
 
 };
@@ -723,9 +741,8 @@ function LoginCtrl($scope,$location, Utils, WebService, $interval) {
     vm.signup = signup;
     vm.logAgn = logAgn;
 
-    if(!STORAGE.getStorage("access_token"))
+    if(!STORAGE.getStorage("email_auth_token"))
     {
-
         /**
          * submit - This function is used to validate the user credentials
          * @author Prathamesh parab
@@ -755,13 +772,13 @@ function LoginCtrl($scope,$location, Utils, WebService, $interval) {
                 if (vm.user.uName && vm.user.pwd) {
                     WEBSERVICE.validatelogin(vm.user, function (result) {
                         if (result && result.response.code === 2000) {
-                            STORAGE.setStorage("access_token", result.response.data.token);
+                            STORAGE.setStorage("email_auth_token", result.response.data.token);
                             $location.path('/email');
                            // location.reload();
                         }
                         else {
                             WEBSERVICE.createAlert(1, "Invalid username and password", 3);
-                            STORAGE.deleteStorage("access_token");
+                            STORAGE.deleteStorage("email_auth_token");
                         }
                     });
                 } else {

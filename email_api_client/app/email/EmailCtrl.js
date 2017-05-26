@@ -20,7 +20,7 @@ function EmailCtrl($scope, $location, Utils, WebService, $interval) {
      * to check token is expire or not and then only proceed
      */
 
-    if (STORAGE.getStorage("access_token") && STORAGE.getStorage("access_token") != "") {
+    if (STORAGE.getStorage("email_auth_token") && STORAGE.getStorage("email_auth_token") != "") {
         vm.user = {
             emails: "",
             body: "",
@@ -71,7 +71,7 @@ function EmailCtrl($scope, $location, Utils, WebService, $interval) {
          * @author Prathamesh Parab
          */
         function logout() {
-            STORAGE.deleteStorage("access_token");
+            STORAGE.deleteStorage("email_auth_token");
             $location.path('/login');
             location.reload();
         }
@@ -92,9 +92,9 @@ function EmailCtrl($scope, $location, Utils, WebService, $interval) {
             $(".emailfailure").slideUp(500).hide(0);
         }
     } else {
-        STORAGE.deleteStorage("access_token");
+        STORAGE.deleteStorage("email_auth_token");
         $location.path('/login');
-        location.reload();
+        //location.reload();
     }
 
 };

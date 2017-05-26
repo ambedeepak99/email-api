@@ -13,26 +13,6 @@ var developmentConfig = {
         infoLogPath:"./logs"
     },
     mysqlConfig: {
-        master_database: {
-            init:false,
-            host: "localhost",
-            port:"3307",
-            connectionLimit: 20,
-            user: "root",
-            password: "root",
-            database: "emailApi",
-            multipleStatements: true
-        },
-        slave_database: {
-            init:false,
-            host: "localhost",
-            port:"3307",
-            connectionLimit: 20,
-            user: "root",
-            password: "root",
-            database: "emailApi",
-            multipleStatements: true
-        }
     },
     mongoConfig: {
         emailApi: {
@@ -45,10 +25,6 @@ var developmentConfig = {
         }
     },
     redisConfig:{
-        testRedisDb:{
-            init:false,
-            host:""
-        }
     }
 };
 

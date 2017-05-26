@@ -29,7 +29,7 @@ function LoginCtrl($scope,$location, Utils, WebService, $interval) {
     vm.signup = signup;
     vm.logAgn = logAgn;
 
-    if(!STORAGE.getStorage("access_token"))
+    if(!STORAGE.getStorage("email_auth_token"))
     {
         /**
          * submit - This function is used to validate the user credentials
@@ -60,13 +60,13 @@ function LoginCtrl($scope,$location, Utils, WebService, $interval) {
                 if (vm.user.uName && vm.user.pwd) {
                     WEBSERVICE.validatelogin(vm.user, function (result) {
                         if (result && result.response.code === 2000) {
-                            STORAGE.setStorage("access_token", result.response.data.token);
+                            STORAGE.setStorage("email_auth_token", result.response.data.token);
                             $location.path('/email');
                            // location.reload();
                         }
                         else {
                             WEBSERVICE.createAlert(1, "Invalid username and password", 3);
-                            STORAGE.deleteStorage("access_token");
+                            STORAGE.deleteStorage("email_auth_token");
                         }
                     });
                 } else {

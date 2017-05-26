@@ -12,42 +12,19 @@ var productionConfig = {
         errorLogPath: "./logs",
         infoLogPath:"./logs"
     },
-    mysqlConfig: {
-        master_database: {
-            init:false,
-            host: "localhost",
-            port:"3307",
-            connectionLimit: 20,
-            user: "root",
-            password: "root",
-            database: "emailApi",
-            multipleStatements: true
-        },
-        slave_database: {
-            init:false,
-            host: "localhost",
-            port:"3307",
-            connectionLimit: 20,
-            user: "root",
-            password: "root",
-            database: "emailApi",
-            multipleStatements: true
-        }
-    },
+    mysqlConfig: {}
+    ,
     mongoConfig: {
         emailApi: {
             init:true,
             host: "mongodb://localhost:27017/emailApi",
             collection: {
-                email_log:"email_log"
+                email_log:"email_log",
+                users: "users"
             }
         }
     },
     redisConfig:{
-        testRedisDb:{
-            init:false,
-            host:""
-        }
     }
 };
 

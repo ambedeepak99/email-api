@@ -1,6 +1,15 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        jsdoc: {
+            dist: {
+                src: ['app/**/*.js', 'readme.md'],
+                options: {
+                    destination: 'api.document',
+                    template : "node_modules/docdash"
+                }
+            }
+        },
         imagemin: {
             jpg: {
                 options: {
@@ -216,6 +225,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
 //    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
-    grunt.registerTask('default', ['concat', 'uglify', 'less', 'concat_css', 'cssmin', 'htmlmin', 'imagemin','copy']);
+    grunt.registerTask('default', ['concat', 'uglify', 'less', 'concat_css', 'cssmin', 'htmlmin', 'imagemin','copy','jsdoc']);
 };

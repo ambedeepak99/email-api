@@ -68,7 +68,7 @@ app.factory('Utils', function () {
         localStorage.removeItem(key);
     }
 
-    return{
+    return {
         CONSTANTS: constants,
         STORAGE: storageFunctions,
         SOUNDNOTIFY: soundNotifyFunctions,
@@ -84,7 +84,7 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
             validatelogin: validatelogin,
             createAlert: createAlert,
             sendMails: sendMails,
-            signUp : signUp
+            signUp: signUp
         }
         var finalResult = {
             "success": false,
@@ -97,17 +97,17 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
          * @param callback
          * @author Prathamesh Parab
          */
-        function checkAuthorization(err, callback) {
-            if (err.code == 401 || err.code == 402) {
-                $location.path('/login');
-                createAlert(1, "your session has been expire please try to login again", 3);
-            } else {
-                $location.path('/login');
-                createAlert(1, Utils.CONSTANTS.SERVER_ERROR, 3);
-                callback(finalResult);
-            }
+        function checkAuthorization(err) {
+            if (err)
+                if (err.code == 401 || err.code == 402) {
+                    createAlert(1, "your session has been expire please try to login again", 3);
+                    Utils.STORAGE.deleteStorage("email_auth_token");
+                    $location.path('/login');
+                } else {
+                    createAlert(1, Utils.CONSTANTS.SERVER_ERROR, 3);
+                    //$location.path('/login');
+                }
         }
-
         /**
          * This service used to verify user creaditial
          * @param loginInfo
@@ -121,9 +121,12 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                 'password': loginInfo.pwd
             };
 
-            var request_config = { headers: {  "Content-Type": 'application/json',
-                "authorization": Utils.STORAGE.getStorage("access_token")
-            } };
+            var request_config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "authorization": Utils.STORAGE.getStorage("email_auth_token")
+                }
+            };
 
             $http.post(BASE_URL + "user/signin", post_request, request_config)
                 .success(function (data) {
@@ -131,8 +134,11 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                     finalResult.response = data;
                     callback(finalResult);
                 }).error(function (err) {
-                    checkAuthorization(err);
-                });
+                checkAuthorization(err);
+                finalResult.success = false;
+                finalResult.response = err;
+                callback(finalResult);
+            });
         };
 
 
@@ -150,9 +156,12 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                 'email': loginInfo.email
             };
 
-            var request_config = { headers: {  "Content-Type": 'application/json',
-                "authorization": Utils.STORAGE.getStorage("access_token")
-            } };
+            var request_config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "authorization": Utils.STORAGE.getStorage("email_auth_token")
+                }
+            };
 
             $http.post(BASE_URL + "user/signup", post_request, request_config)
                 .success(function (data) {
@@ -160,8 +169,11 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                     finalResult.response = data;
                     callback(finalResult);
                 }).error(function (err) {
-                    checkAuthorization(err);
-                });
+                checkAuthorization(err);
+                finalResult.success = false;
+                finalResult.response = err;
+                callback(finalResult);
+            });
         };
 
         /**
@@ -215,9 +227,12 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                 'body': loginInfo.body
             };
 
-            var request_config = { headers: {  "Content-Type": 'application/json',
-                "authorization": Utils.STORAGE.getStorage("access_token")
-            } };
+            var request_config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "authorization": Utils.STORAGE.getStorage("email_auth_token")
+                }
+            };
 
             $http.post(BASE_URL + "v1/mailer/sendmail", post_request, request_config)
                 .success(function (data) {
@@ -226,11 +241,14 @@ app.factory('WebService', ['$http', 'Utils', '$location', function ($http, Utils
                     finalResult.response = data;
                     callback(finalResult);
                 }).error(function (err) {
-                    checkAuthorization(err);
-                });
+                checkAuthorization(err);
+                finalResult.success = false;
+                finalResult.response = err;
+                callback(finalResult);
+            });
         };
 
-        return{
+        return {
             WEBSERVICES: WebServiceFunctions
         }
     }]
