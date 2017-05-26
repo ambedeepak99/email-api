@@ -1,0 +1,24 @@
+/* TEAM */
+    Web Developer:Prathamesh Parab
+    From:Mumbai, India
+
+    Full Stack Developer:Deepak Ambekar
+    From:Mumbai, India
+
+    Full Stack Developer:Pravin Lolage
+    From:Mumbai, India
+
+    UX Designer:Rakesh Shah
+    From:Mumbai, India
+
+    UI Developer:Vineet Vinayakumar
+    From:Mumbai, India
+
+
+/* TECHNOLOGY */
+    HTML5,AngularJS,Bootstrap
+
+/* SITE */
+	Last update:2017/05/26
+	Language:English
+	Doctype:HTML5

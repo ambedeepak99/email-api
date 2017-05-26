@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="done">
+<head lang="en">
+    <title>Send Mail</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="sena mail,send bulk mail">
+    <meta name="description" content="Send mail is used to send bulk mail list of mail ids">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta name="google-site-verification" content="e5BrZsEuuiiOOnblMTnN8235NICFKWEDEQIs9CYEnCA" />-->
+    <link rel="icon" href="img/mail.png">
+    <!--Style files-->
+    <link rel="stylesheet" type="text/css" href="script/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="script/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="script/bootstrap-theme.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/production.min.css"/>
+    <link type="text/plain" rel="author" href="humans.txt"/>
+    <!--end-->
+
+</head>
+<body ng-controller="containerCtrl as vmmain">
+<div id="alert-container">
+    <div data-alert id="myAlert" class="alert-box alert-msg radius" style="display: none;">
+        <span class="alert-message">Alert!</span>
+        <!--<a class="close">&times;</a>-->
+    </div>
+    <div data-alert id="myWarning" class="alert-box warning-msg radius" style="display: none;">
+        <span class="alert-message">Alert!</span>
+        <!--<a class="close">&times;</a>-->
+    </div>
+    <div data-alert id="myAlertSuccess" class="alert-box success-msg radius" style="display: none;">
+        <span class="alert-message">Alert!</span>
+        <!--<a class="close">&times;</a>-->
+    </div>
+</div>
+<div class="container">
+    <div class="mainView" ng-view></div>
+</div>
+
+<!--Audio Files-->
+
+<!--end-->
+
+<!--Script Files-->
+<script type="text/javascript" src="script/angular.min.js"></script>
+<script type="text/javascript" src="script/angular-route.js"></script>
+<script type="text/javascript" src="script/angular-animate.js"></script>
+<script type="text/javascript" src="script/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="script/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/production.min.js"></script>
+<!--end-->
+
+</body>
+</html>

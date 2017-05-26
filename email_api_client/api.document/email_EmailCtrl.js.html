@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>email/EmailCtrl.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EmailCtrl.html">EmailCtrl</a><ul class='methods'><li data-type='method'><a href="EmailCtrl.html#~logout">logout</a></li><li data-type='method'><a href="EmailCtrl.html#~moveNext">moveNext</a></li><li data-type='method'><a href="EmailCtrl.html#~sendmail">sendmail</a></li><li data-type='method'><a href="EmailCtrl.html#~sendMailAgn">sendMailAgn</a></li></ul></li><li><a href="LoginCtrl.html">LoginCtrl</a><ul class='methods'><li data-type='method'><a href="LoginCtrl.html#~submit">submit</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="app.html">app</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">email/EmailCtrl.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * EmailCtrl - This controller is used to send validated emails to users
+ * @param $scope {object} Scope object
+ * @param $location {object} location object
+ * @param Utils {object} Utils object
+ * @param WebService {object} WebService object
+ * @param $interval {object} interval object
+ * @author Prathamesh Parab
+ * @constructor
+ */
+function EmailCtrl($scope, $location, Utils, WebService, $interval) {
+
+    var vm = this;
+    var WEBSERVICE = WebService.WEBSERVICES;
+    var SOUNDNOTIFY = Utils.SOUNDNOTIFY;
+    var STORAGE = Utils.STORAGE;
+
+    /**
+     * to check token is expire or not and then only proceed
+     */
+
+    if (STORAGE.getStorage("access_token") &amp;&amp; STORAGE.getStorage("access_token") != "") {
+        vm.user = {
+            emails: "",
+            body: "",
+            subject: ""
+        };
+        vm.sendmail = sendmail;
+        vm.logout = logout;
+        vm.sendMailAgn = sendMailAgn;
+        vm.moveText = moveNext;
+
+        /**
+         * sendmail - this function is used to send mail to user
+         * @author Prathamesh Parab
+         */
+        function sendmail() {
+            $(".sendEmail").slideUp(500);
+            $(".emailloading").delay(1000).slideDown(500);
+            $(".logoutBtn").hide();
+            if (vm.user.emails != undefined) {
+                if (vm.user.emails &amp;&amp; vm.user.subject &amp;&amp; vm.user.body) {
+                    WEBSERVICE.sendMails(vm.user, function (result) {
+                        if (result &amp;&amp; result.response.code === 2000) {
+                            $(".sendEmail").slideUp(500);
+                            $(".emailloading").delay(500).slideDown(500).slideUp(500).hide(0);
+                            $(".emailSuccess").delay(2000).slideDown(500);
+                            $(".logoutBtn").delay(2000).show();
+                        }
+                        else {
+                            $(".emailloading").delay(1000).slideDown(500).slideUp(500).hide(0);
+                            $(".emailfailure").delay(2000).slideDown(500);
+                        }
+                    });
+                } else {
+
+                    WEBSERVICE.createAlert(1, "Please fill all mandatory details", 3);
+                    $(".emailloading").slideUp(100);
+                    $(".sendEmail").delay(1000).slideDown(500);
+                }
+            } else {
+                WEBSERVICE.createAlert(1, "Please provider proper email address", 3);
+                $(".emailloading").slideUp(100);
+                $(".sendEmail").delay(1000).slideDown(500);
+            }
+        }
+
+        /**
+         * logout  - this function is used to sign off the user
+         * @author Prathamesh Parab
+         */
+        function logout() {
+            STORAGE.deleteStorage("access_token");
+            $location.path('/login');
+            location.reload();
+        }
+
+        /**
+         * moveNext - this function is used to move to the next step on sending mail form
+         * @author Prathamesh Parab
+         */
+
+        function moveNext() {
+            $(".downArrow").click(function () {
+                $(".enterEmail").slideUp(500);
+                $(".sendEmail").delay(500).slideDown(500);
+                $('#div').show(0).delay(5000).hide(0);
+            });
+        }
+
+        /**
+         * sendMailAgn - this function is used send back to send mail screen
+         * @author Prathamesh Parab
+         */
+
+        function sendMailAgn() {
+            vm.user = {
+                emails: "",
+                body: "",
+                subject: ""
+            };
+            $(".sendEmail").delay(1000).slideDown(500);
+            $(".emailSuccess").slideUp(500).hide(0);
+            $(".emailfailure").slideUp(500).hide(0);
+        }
+    } else {
+        STORAGE.deleteStorage("access_token");
+        $location.path('/login');
+        location.reload();
+    }
+
+};
+app.controller('EmailCtrl', ['$scope', '$location', 'Utils', 'WebService', '$interval', EmailCtrl]);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri May 26 2017 20:25:24 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
