@@ -12,8 +12,8 @@ var config = {
     authConfig: {
         basicAlias: "/v1",
         secretKey: "iAmAwesomeFullStackDeveloper",
-        inactiveTimeFrame: 1,//min
-        forceExpireTimeFrame: 60 //min
+        inactiveTimeFrame: 12*60,//min
+        forceExpireTimeFrame: 24*60 //min
     },
     logConfig:{
         datePattern:".yyyy-MM-dd.HH-mm"

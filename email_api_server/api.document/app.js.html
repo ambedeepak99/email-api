@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>app.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,63 +27,104 @@
 
 <div id="main">
     
+    <h1 class="page-title">app.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace utils
+ * @description utils
+ * @author deepak.ambekar [5/25/2017].
+ */
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var app = express();
+var cors = require('cors');
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// uncomment after placing your favicon in /public
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(require('less-middleware')(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+
+//region global variable
+global.mongoObjectId = require('mongodb').ObjectID;
+global._globalDir = __dirname;
+global._fs = require('fs');
+global._ = require('underscore');
+global._async = require('async');
+global._constants = require('./lib/constants');
+global._config = require('./config/appConfig');
+global._logger = require('./lib/logger/winstonLogger');
+global._mailer = require('./lib/contact/mailer');
+global._mysqlConnections = require('./lib/db_connect/mysqlConnect');
+require('./lib/db_connect/mongoConnect').createConnection(function (connections) {
+    global._mongoConnections = connections;
+});
+global._redisConnections = require('./lib/db_connect/redisConnect');
+global._utils = require("./lib/utils");
+//endregion
 
 
+var auth = require('./lib/authenticate/auth');
+//app.use('/v1/', require('./routes')(app));
+app.all(_config.authConfig.basicAlias + '/*', [auth.authenticate]);
+var router = require('./routes')(app);
 
+app.options('/mailer/signin', function (req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.end();
+});
 
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
+// error handler
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
 
+process.on('uncaughtException', function (err) {
+        _logger.error(" ##### SERVER CRASH ##### \n"
+            , err,
+            "\n ########## END ##########");
+    }
+);
 
-
-    
-
-
-    <section class="readme">
-        <article><h1>Welcome to Node Email API!</h1><p>This api provides the functionality to send the mail using different Email APIs. API first try to send emails by one API, if it fails then it try to send using other API and still it fails then it finally sends an emails using <a href="https://www.npmjs.com/package/nodemailer">nodemailer</a>.</p>
-<hr>
-<h2>How to Deploy</h2><p>You need to have Node, NPM(Node Package Manager) and MongoDb installed on your machine. If you don't have it the please run following commands:</p>
-<p><strong>For Node and NPM</strong>:
-Please follow this <a href="https://docs.npmjs.com/getting-started/installing-node">article</a></p>
-<p><strong>For MongoDb</strong>:
-Please follow this <a href="https://docs.mongodb.com/getting-started/shell/installation/">article</a></p>
-<hr>
-<p><strong>Deploy in Production</strong>:</p>
-<pre class="prettyprint source lang-sh"><code>$ npm install --only=production
-$ NODE_ENV=production nodemon bin/www</code></pre><hr>
-<p><strong>Deploy in Development</strong>:</p>
-<ol>
-<li>Creating an environment variable named NODE_ENV, and setting it to 'development'.</li>
-<li>export NODE_ENV=development
-OR</li>
-<li>run the node app with following command
-<code>NODE_ENV=development node app.js</code>
-OR</li>
-<li>add to environment variable(For linux users)<blockquote>
-<ul>
-<li>login as super user<pre class="prettyprint source"><code>  $ sudo -i
-  $ gedit /etc/bash.bashrc</code></pre></li>
-<li>write at the end of file<pre class="prettyprint source"><code>  NODE_ENV=development</code></pre></li>
-<li>save file and close it</li>
-</ul>
-</blockquote>
-</li>
-</ol>
-<pre class="prettyprint source lang-sh"><code>$ npm install
-$ NODE_ENV=development nodemon bin/www</code></pre><p>API will be running on the port 3000 by default.</p>
-<hr>
-<p>We have used the jsdoc plugin of grunt for that you need to install <a href="https://gruntjs.com/configuring-tasks">grunt</a> dev dependencies.</p>
-<p>Just run the following command after installing grunt dependencies</p>
-<pre class="prettyprint source lang-sh"><code>$ grunt jsdoc</code></pre><p>Please check the <a href="https://www.getpostman.com/collections/5b6183cf1d39c4e3eb55">postman collection</a> to run the api.</p></article>
+module.exports = app;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
