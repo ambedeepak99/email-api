@@ -54,7 +54,7 @@ $ NODE_ENV=development nodemon bin/www
 API will be running on the port 3000 by default.
 
 -----------
-We have used the jsdoc plugin of grunt for that you need to install [grunt](https://www.npmjs.com/package/grunt-cli) dev dependencies.
+We have used the jsdoc plugin of grunt for that you need to install [grunt](https://gruntjs.com/configuring-tasks) dev dependencies.
 
 Just run the following command after installing grunt dependencies
 ```sh
