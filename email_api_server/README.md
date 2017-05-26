@@ -1,7 +1,7 @@
 Welcome to Node Email API!
 ===================
 
-This api provides the functionalty to send the mail using different Email APIs. API first try to send emails by one API, if it fails then it try to send using other API and still it fails then it finally sends an emails using [nodemailer](https://www.npmjs.com/package/nodemailer).
+This api provides the functionality to send the mail using different Email APIs. API first try to send emails by one API, if it fails then it try to send using other API and still it fails then it finally sends an emails using [nodemailer](https://www.npmjs.com/package/nodemailer).
 
 ----------
 
