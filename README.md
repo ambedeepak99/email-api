@@ -15,8 +15,8 @@ Create a service that accepts the necessary information and sends emails. It sho
 
 You need to have Node, NPM(Node Package Manager) and MongoDb installed on your machine.
 
-**For Node and NPM**: Please follow this [article](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server)
-**For MongoDb**: Please follow this [article](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
+**For Node and NPM**: Please follow this [article](https://docs.npmjs.com/getting-started/installing-node)
+**For MongoDb**: Please follow this [article](https://docs.mongodb.com/getting-started/shell/installation/)
 
 **Features**:
 Project have the following functionalities:
@@ -24,7 +24,7 @@ Project have the following functionalities:
  - Signin and Signup for the users
  - Token based API authentication
  - Auto sending in case all of the external API fails
- - Logs
+ - Server activity logs
 
 
 To view Project Documentation, you need to place the folder server/api.document to root folder of web sevrer.

@@ -12,10 +12,10 @@ How to Deploy
 You need to have Node, NPM(Node Package Manager) and MongoDb installed on your machine. If you don't have it the please run following commands:
 
 **For Node and NPM**:
-Please follow this [article](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server)
+Please follow this [article](https://docs.npmjs.com/getting-started/installing-node)
 
 **For MongoDb**:
-Please follow this [article](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
+Please follow this [article](https://docs.mongodb.com/getting-started/shell/installation/)
 
 --------------------
 **Deploy in Production**:
@@ -23,8 +23,6 @@ Please follow this [article](https://www.digitalocean.com/community/tutorials/ho
 $ npm install --only=production
 $ NODE_ENV=production nodemon bin/www
 ```
-
-API will be running on the port 3000 by default.
 
 --------------------
 **Deploy in Development**:
@@ -52,6 +50,8 @@ OR
 $ npm install
 $ NODE_ENV=development nodemon bin/www
 ```
+
+API will be running on the port 3000 by default.
 
 -----------
 We have used the jsdoc plugin of grunt for that you need to install [grunt](https://www.npmjs.com/package/grunt-cli) dev dependencies.
